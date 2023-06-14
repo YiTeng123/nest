@@ -1,0 +1,954 @@
+{
+  "Colors": ["Red", "Blue", "Orange"],
+  "MainColor": "Red",
+
+  "Shapes": [
+    {
+      "Color": "Blue",
+      "Group": 1,
+      "Source": "gqji_g1_01.png",
+      "Desc": "三角形",
+      "RotationCfg": {
+        "GetValueType": 0,
+        "Range": []
+      }
+    },
+    {
+      "Color": "Red",
+      "Group": 1,
+      "Source": "gqji_g1_02.png",
+      "Desc": "三角形",
+      "RotationCfg": {
+        "GetValueType": 0,
+        "Range": []
+      }
+    },
+    {
+      "Color": "Orange",
+      "Group": 1,
+      "Source": "gqji_g1_03.png",
+      "Desc": "三角形",
+      "RotationCfg": {
+        "GetValueType": 0,
+        "Range": []
+      }
+    },
+    {
+      "Color": "Red",
+      "Group": 1,
+      "Source": "gqji_g1_04.png",
+      "Desc": "三角形",
+      "RotationCfg": {
+        "GetValueType": 0,
+        "Range": []
+      }
+    },
+    {
+      "Color": "Red",
+      "Group": 1,
+      "Source": "gqji_g1_05.png",
+      "Desc": "三角形",
+      "RotationCfg": {
+        "GetValueType": 0,
+        "Range": []
+      }
+    },
+    {
+      "Color": "Red",
+      "Group": 1,
+      "Source": "gqji_g1_06.png",
+      "Desc": "三角形",
+      "RotationCfg": {
+        "GetValueType": 0,
+        "Range": []
+      }
+    },
+    {
+      "Color": "Red",
+      "Group": 1,
+      "Source": "gqji_g1_07.png",
+      "Desc": "三角形",
+      "RotationCfg": {
+        "GetValueType": 0,
+        "Range": []
+      }
+    },
+
+    {
+      "Color": "Red",
+      "Group": 2,
+      "Source": "gqji_g2_01.png",
+      "Desc": "三角形_圆",
+      "RotationCfg": {
+        "GetValueType": 0,
+        "Range": []
+      }
+    },
+    {
+      "Color": "Blue",
+      "Group": 2,
+      "Source": "gqji_g2_02.png",
+      "Desc": "三角形_圆",
+      "RotationCfg": {
+        "GetValueType": 0,
+        "Range": []
+      }
+    },
+    {
+      "Color": "Orange",
+      "Group": 2,
+      "Source": "gqji_g2_03.png",
+      "Desc": "三角形_圆",
+      "RotationCfg": {
+        "GetValueType": 0,
+        "Range": []
+      }
+    },
+    {
+      "Color": "Red",
+      "Group": 2,
+      "Source": "gqji_g2_04.png",
+      "Desc": "三角形_圆",
+      "RotationCfg": {
+        "GetValueType": 0,
+        "Range": []
+      }
+    },
+    {
+      "Color": "Red",
+      "Group": 2,
+      "Source": "gqji_g2_05.png",
+      "Desc": "三角形_圆",
+      "RotationCfg": {
+        "GetValueType": 0,
+        "Range": []
+      }
+    },
+    {
+      "Color": "Red",
+      "Group": 2,
+      "Source": "gqji_g2_06.png",
+      "Desc": "三角形_圆",
+      "RotationCfg": {
+        "GetValueType": 0,
+        "Range": []
+      }
+    },
+    {
+      "Color": "Red",
+      "Group": 2,
+      "Source": "gqji_g2_07.png",
+      "Desc": "三角形_圆",
+      "RotationCfg": {
+        "GetValueType": 0,
+        "Range": []
+      }
+    },
+    {
+      "Color": "Red",
+      "Group": 2,
+      "Source": "gqji_g2_08.png",
+      "Desc": "三角形_圆",
+      "RotationCfg": {
+        "GetValueType": 0,
+        "Range": []
+      }
+    },
+
+    {
+      "Color": "Red",
+      "Group": 3,
+      "Source": "gqji_g3_01.png",
+      "Desc": "菱形",
+      "RotationCfg": {
+        "GetValueType": 0,
+        "Range": []
+      }
+    },
+    {
+      "Color": "Orange",
+      "Group": 3,
+      "Source": "gqji_g3_02.png",
+      "Desc": "菱形",
+      "RotationCfg": {
+        "GetValueType": 0,
+        "Range": []
+      }
+    },
+    {
+      "Color": "Blue",
+      "Group": 3,
+      "Source": "gqji_g3_03.png",
+      "Desc": "菱形"
+    },
+    {
+      "Color": "Red",
+      "Group": 3,
+      "Source": "gqji_g3_04.png",
+      "Desc": "菱形"
+    },
+    {
+      "Color": "Red",
+      "Group": 3,
+      "Source": "gqji_g3_05.png",
+      "Desc": "菱形",
+      "RotationCfg": {
+        "GetValueType": 0,
+        "Range": []
+      }
+    },
+    {
+      "Color": "Red",
+      "Group": 3,
+      "Source": "gqji_g3_06.png",
+      "Desc": "菱形",
+      "RotationCfg": {
+        "GetValueType": 0,
+        "Range": []
+      }
+    },
+    {
+      "Color": "Red",
+      "Group": 3,
+      "Source": "gqji_g3_07.png",
+      "Desc": "菱形",
+      "RotationCfg": {
+        "GetValueType": 0,
+        "Range": []
+      }
+    },
+
+    {
+      "Color": "Blue",
+      "Group": 4,
+      "Source": "gqji_g4_01.png",
+      "Desc": "星星",
+      "RotationCfg": {
+        "GetValueType": 0,
+        "Range": []
+      }
+    },
+    {
+      "Color": "Red",
+      "Group": 4,
+      "Source": "gqji_g4_02.png",
+      "Desc": "星星"
+    },
+    {
+      "Color": "Orange",
+      "Group": 4,
+      "Source": "gqji_g4_03.png",
+      "Desc": "星星"
+    },
+    {
+      "Color": "Red",
+      "Group": 4,
+      "Source": "gqji_g4_04.png",
+      "Desc": "星星",
+      "RotationCfg": {
+        "GetValueType": 0,
+        "Range": []
+      }
+    },
+    {
+      "Color": "Red",
+      "Group": 4,
+      "Source": "gqji_g4_05.png",
+      "Desc": "星星",
+      "RotationCfg": {
+        "GetValueType": 0,
+        "Range": []
+      }
+    },
+    {
+      "Color": "Red",
+      "Group": 4,
+      "Source": "gqji_g4_06.png",
+      "Desc": "星星",
+      "RotationCfg": {
+        "GetValueType": 0,
+        "Range": []
+      }
+    },
+    {
+      "Color": "Red",
+      "Group": 4,
+      "Source": "gqji_g4_07.png",
+      "Desc": "星星",
+      "RotationCfg": {
+        "GetValueType": 0,
+        "Range": []
+      }
+    },
+
+    {
+      "Color": "Blue",
+      "Group": 5,
+      "Source": "gqji_g5_01.png",
+      "Desc": "吐字形",
+      "RotationCfg": {
+        "GetValueType": 0,
+        "Range": []
+      }
+    },
+    {
+      "Color": "Red",
+      "Group": 5,
+      "Source": "gqji_g5_02.png",
+      "Desc": "吐字形",
+      "RotationCfg": {
+        "GetValueType": 0,
+        "Range": []
+      }
+    },
+    {
+      "Color": "Orange",
+      "Group": 5,
+      "Source": "gqji_g5_03.png",
+      "Desc": "吐字形",
+      "RotationCfg": {
+        "GetValueType": 0,
+        "Range": []
+      }
+    },
+    {
+      "Color": "Red",
+      "Group": 5,
+      "Source": "gqji_g5_04.png",
+      "Desc": "吐字形",
+      "RotationCfg": {
+        "GetValueType": 0,
+        "Range": []
+      }
+    },
+    {
+      "Color": "Red",
+      "Group": 5,
+      "Source": "gqji_g5_05.png",
+      "Desc": "吐字形",
+      "RotationCfg": {
+        "GetValueType": 0,
+        "Range": []
+      }
+    },
+    {
+      "Color": "Red",
+      "Group": 5,
+      "Source": "gqji_g5_06.png",
+      "Desc": "吐字形",
+      "RotationCfg": {
+        "GetValueType": 0,
+        "Range": []
+      }
+    },
+    {
+      "Color": "Red",
+      "Group": 5,
+      "Source": "gqji_g5_07.png",
+      "Desc": "吐字形",
+      "RotationCfg": {
+        "GetValueType": 0,
+        "Range": []
+      }
+    },
+
+    {
+      "Color": "Blue",
+      "Group": 6,
+      "Source": "gqji_g6_01.png",
+      "Desc": "太阳日出",
+      "RotationCfg": {
+        "GetValueType": 0,
+        "Range": []
+      }
+    },
+    {
+      "Color": "Red",
+      "Group": 6,
+      "Source": "gqji_g6_02.png",
+      "Desc": "太阳日出",
+      "RotationCfg": {
+        "GetValueType": 0,
+        "Range": []
+      }
+    },
+    {
+      "Color": "Orange",
+      "Group": 6,
+      "Source": "gqji_g6_03.png",
+      "Desc": "太阳日出",
+      "RotationCfg": {
+        "GetValueType": 0,
+        "Range": []
+      }
+    },
+    {
+      "Color": "Red",
+      "Group": 6,
+      "Source": "gqji_g6_04.png",
+      "Desc": "太阳日出",
+      "RotationCfg": {
+        "GetValueType": 0,
+        "Range": []
+      }
+    },
+    {
+      "Color": "Red",
+      "Group": 6,
+      "Source": "gqji_g6_05.png",
+      "Desc": "太阳日出",
+      "RotationCfg": {
+        "GetValueType": 0,
+        "Range": []
+      }
+    },
+    {
+      "Color": "Red",
+      "Group": 6,
+      "Source": "gqji_g6_06.png",
+      "Desc": "太阳日出",
+      "RotationCfg": {
+        "GetValueType": 0,
+        "Range": []
+      }
+    },
+    {
+      "Color": "Red",
+      "Group": 6,
+      "Source": "gqji_g6_07.png",
+      "Desc": "太阳日出",
+      "RotationCfg": {
+        "GetValueType": 0,
+        "Range": []
+      }
+    },
+
+    {
+      "Color": "Orange",
+      "Group": 7,
+      "Source": "gqji_g7_01.png",
+      "Desc": "几何三角",
+      "RotationCfg": {
+        "GetValueType": 0,
+        "Range": []
+      }
+    },
+    {
+      "Color": "Orange",
+      "Group": 7,
+      "Source": "gqji_g7_02.png",
+      "Desc": "几何三角",
+      "RotationCfg": {
+        "GetValueType": 0,
+        "Range": []
+      }
+    },
+    {
+      "Color": "Orange",
+      "Group": 7,
+      "Source": "gqji_g7_03.png",
+      "Desc": "几何三角",
+      "RotationCfg": {
+        "GetValueType": 0,
+        "Range": []
+      }
+    },
+    {
+      "Color": "Orange",
+      "Group": 7,
+      "Source": "gqji_g7_04.png",
+      "Desc": "几何三角",
+      "RotationCfg": {
+        "GetValueType": 0,
+        "Range": []
+      }
+    },
+    {
+      "Color": "Orange",
+      "Group": 7,
+      "Source": "gqji_g7_05.png",
+      "Desc": "几何三角",
+      "RotationCfg": {
+        "GetValueType": 0,
+        "Range": []
+      }
+    },
+    {
+      "Color": "Orange",
+      "Group": 7,
+      "Source": "gqji_g7_06.png",
+      "Desc": "几何三角",
+      "RotationCfg": {
+        "GetValueType": 0,
+        "Range": []
+      }
+    },
+    {
+      "Color": "Orange",
+      "Group": 7,
+      "Source": "gqji_g7_07.png",
+      "Desc": "几何三角",
+      "RotationCfg": {
+        "GetValueType": 0,
+        "Range": []
+      }
+    },
+    {
+      "Color": "Orange",
+      "Group": 7,
+      "Source": "gqji_g7_08.png",
+      "Desc": "几何三角",
+      "RotationCfg": {
+        "GetValueType": 0,
+        "Range": []
+      }
+    },
+    {
+      "Color": "Orange",
+      "Group": 7,
+      "Source": "gqji_g7_09.png",
+      "Desc": "几何三角",
+      "RotationCfg": {
+        "GetValueType": 0,
+        "Range": []
+      }
+    },
+    {
+      "Color": "Orange",
+      "Group": 7,
+      "Source": "gqji_g7_10.png",
+      "Desc": "几何三角",
+      "RotationCfg": {
+        "GetValueType": 0,
+        "Range": []
+      }
+    },
+    {
+      "Color": "Orange",
+      "Group": 7,
+      "Source": "gqji_g7_11.png",
+      "Desc": "几何三角",
+      "RotationCfg": {
+        "GetValueType": 0,
+        "Range": []
+      }
+    },
+    {
+      "Color": "Orange",
+      "Group": 7,
+      "Source": "gqji_g7_12.png",
+      "Desc": "几何三角",
+      "RotationCfg": {
+        "GetValueType": 0,
+        "Range": []
+      }
+    },
+    {
+      "Color": "Orange",
+      "Group": 7,
+      "Source": "gqji_g7_13.png",
+      "Desc": "几何三角",
+      "RotationCfg": {
+        "GetValueType": 0,
+        "Range": []
+      }
+    },
+    {
+      "Color": "Orange",
+      "Group": 7,
+      "Source": "gqji_g7_14.png",
+      "Desc": "几何三角",
+      "RotationCfg": {
+        "GetValueType": 0,
+        "Range": []
+      }
+    },
+    {
+      "Color": "Orange",
+      "Group": 7,
+      "Source": "gqji_g7_15.png",
+      "Desc": "几何三角",
+      "RotationCfg": {
+        "GetValueType": 0,
+        "Range": []
+      }
+    },
+    {
+      "Color": "Red",
+      "Group": 7,
+      "Source": "gqji_g7_16.png",
+      "Desc": "几何三角",
+      "RotationCfg": {
+        "GetValueType": 0,
+        "Range": []
+      }
+    },
+    {
+      "Color": "Red",
+      "Group": 7,
+      "Source": "gqji_g7_17.png",
+      "Desc": "几何三角",
+      "RotationCfg": {
+        "GetValueType": 0,
+        "Range": []
+      }
+    },
+    {
+      "Color": "Red",
+      "Group": 7,
+      "Source": "gqji_g7_18.png",
+      "Desc": "几何三角",
+      "RotationCfg": {
+        "GetValueType": 0,
+        "Range": []
+      }
+    },
+    {
+      "Color": "Red",
+      "Group": 7,
+      "Source": "gqji_g7_19.png",
+      "Desc": "几何三角",
+      "RotationCfg": {
+        "GetValueType": 0,
+        "Range": []
+      }
+    },
+    {
+      "Color": "Red",
+      "Group": 7,
+      "Source": "gqji_g7_20.png",
+      "Desc": "几何三角",
+      "RotationCfg": {
+        "GetValueType": 0,
+        "Range": []
+      }
+    },
+    {
+      "Color": "Red",
+      "Group": 7,
+      "Source": "gqji_g7_21.png",
+      "Desc": "几何三角",
+      "RotationCfg": {
+        "GetValueType": 0,
+        "Range": []
+      }
+    },
+    {
+      "Color": "Red",
+      "Group": 7,
+      "Source": "gqji_g7_22.png",
+      "Desc": "几何三角",
+      "RotationCfg": {
+        "GetValueType": 0,
+        "Range": []
+      }
+    },
+    {
+      "Color": "Red",
+      "Group": 7,
+      "Source": "gqji_g7_23.png",
+      "Desc": "几何三角",
+      "RotationCfg": {
+        "GetValueType": 0,
+        "Range": []
+      }
+    },
+    {
+      "Color": "Red",
+      "Group": 7,
+      "Source": "gqji_g7_24.png",
+      "Desc": "几何三角",
+      "RotationCfg": {
+        "GetValueType": 0,
+        "Range": []
+      }
+    },
+    {
+      "Color": "Red",
+      "Group": 7,
+      "Source": "gqji_g7_25.png",
+      "Desc": "几何三角",
+      "RotationCfg": {
+        "GetValueType": 0,
+        "Range": []
+      }
+    },
+    {
+      "Color": "Red",
+      "Group": 7,
+      "Source": "gqji_g7_26.png",
+      "Desc": "几何三角",
+      "RotationCfg": {
+        "GetValueType": 0,
+        "Range": []
+      }
+    },
+    {
+      "Color": "Red",
+      "Group": 7,
+      "Source": "gqji_g7_27.png",
+      "Desc": "几何三角",
+      "RotationCfg": {
+        "GetValueType": 0,
+        "Range": []
+      }
+    },
+    {
+      "Color": "Red",
+      "Group": 7,
+      "Source": "gqji_g7_28.png",
+      "Desc": "几何三角",
+      "RotationCfg": {
+        "GetValueType": 0,
+        "Range": []
+      }
+    },
+    {
+      "Color": "Red",
+      "Group": 7,
+      "Source": "gqji_g7_29.png",
+      "Desc": "几何三角",
+      "RotationCfg": {
+        "GetValueType": 0,
+        "Range": []
+      }
+    },
+    {
+      "Color": "Red",
+      "Group": 7,
+      "Source": "gqji_g7_30.png",
+      "Desc": "几何三角",
+      "RotationCfg": {
+        "GetValueType": 0,
+        "Range": []
+      }
+    },
+    {
+      "Color": "Blue",
+      "Group": 7,
+      "Source": "gqji_g7_31.png",
+      "Desc": "几何三角",
+      "RotationCfg": {
+        "GetValueType": 0,
+        "Range": []
+      }
+    },
+    {
+      "Color": "Blue",
+      "Group": 7,
+      "Source": "gqji_g7_32.png",
+      "Desc": "几何三角",
+      "RotationCfg": {
+        "GetValueType": 0,
+        "Range": []
+      }
+    },
+    {
+      "Color": "Blue",
+      "Group": 7,
+      "Source": "gqji_g7_33.png",
+      "Desc": "几何三角",
+      "RotationCfg": {
+        "GetValueType": 0,
+        "Range": []
+      }
+    },
+    {
+      "Color": "Blue",
+      "Group": 7,
+      "Source": "gqji_g7_34.png",
+      "Desc": "几何三角",
+      "RotationCfg": {
+        "GetValueType": 0,
+        "Range": []
+      }
+    },
+    {
+      "Color": "Blue",
+      "Group": 7,
+      "Source": "gqji_g7_35.png",
+      "Desc": "几何三角",
+      "RotationCfg": {
+        "GetValueType": 0,
+        "Range": []
+      }
+    },
+    {
+      "Color": "Blue",
+      "Group": 7,
+      "Source": "gqji_g7_36.png",
+      "Desc": "几何三角",
+      "RotationCfg": {
+        "GetValueType": 0,
+        "Range": []
+      }
+    },
+    {
+      "Color": "Blue",
+      "Group": 7,
+      "Source": "gqji_g7_37.png",
+      "Desc": "几何三角",
+      "RotationCfg": {
+        "GetValueType": 0,
+        "Range": []
+      }
+    },
+    {
+      "Color": "Blue",
+      "Group": 7,
+      "Source": "gqji_g7_38.png",
+      "Desc": "几何三角",
+      "RotationCfg": {
+        "GetValueType": 0,
+        "Range": []
+      }
+    },
+    {
+      "Color": "Blue",
+      "Group": 7,
+      "Source": "gqji_g7_39.png",
+      "Desc": "几何三角",
+      "RotationCfg": {
+        "GetValueType": 0,
+        "Range": []
+      }
+    },
+    {
+      "Color": "Blue",
+      "Group": 7,
+      "Source": "gqji_g7_40.png",
+      "Desc": "几何三角",
+      "RotationCfg": {
+        "GetValueType": 0,
+        "Range": []
+      }
+    },
+    {
+      "Color": "Blue",
+      "Group": 7,
+      "Source": "gqji_g7_41.png",
+      "Desc": "几何三角",
+      "RotationCfg": {
+        "GetValueType": 0,
+        "Range": []
+      }
+    },
+    {
+      "Color": "Blue",
+      "Group": 7,
+      "Source": "gqji_g7_42.png",
+      "Desc": "几何三角",
+      "RotationCfg": {
+        "GetValueType": 0,
+        "Range": []
+      }
+    },
+    {
+      "Color": "Blue",
+      "Group": 7,
+      "Source": "gqji_g7_43.png",
+      "Desc": "几何三角",
+      "RotationCfg": {
+        "GetValueType": 0,
+        "Range": []
+      }
+    },
+    {
+      "Color": "Blue",
+      "Group": 7,
+      "Source": "gqji_g7_44.png",
+      "Desc": "几何三角",
+      "RotationCfg": {
+        "GetValueType": 0,
+        "Range": []
+      }
+    },
+    {
+      "Color": "Blue",
+      "Group": 7,
+      "Source": "gqji_g7_45.png",
+      "Desc": "几何三角",
+      "RotationCfg": {
+        "GetValueType": 0,
+        "Range": []
+      }
+    },
+
+    {
+      "Color": "Blue",
+      "Group": 8,
+      "Source": "gqji_g8_01.png",
+      "Desc": "螺旋丸",
+      "RotationCfg": {
+        "GetValueType": 0,
+        "Range": []
+      }
+    },
+    {
+      "Color": "Red",
+      "Group": 8,
+      "Source": "gqji_g8_02.png",
+      "Desc": "螺旋丸",
+      "RotationCfg": {
+        "GetValueType": 0,
+        "Range": []
+      }
+    },
+    {
+      "Color": "Orange",
+      "Group": 8,
+      "Source": "gqji_g8_03.png",
+      "Desc": "螺旋丸",
+      "RotationCfg": {
+        "GetValueType": 0,
+        "Range": []
+      }
+    },
+    {
+      "Color": "Red",
+      "Group": 8,
+      "Source": "gqji_g8_04.png",
+      "Desc": "螺旋丸"
+    },
+    {
+      "Color": "Red",
+      "Group": 8,
+      "Source": "gqji_g8_05.png",
+      "Desc": "螺旋丸",
+      "RotationCfg": {
+        "GetValueType": 0,
+        "Range": []
+      }
+    },
+    {
+      "Color": "Red",
+      "Group": 8,
+      "Source": "gqji_g8_06.png",
+      "Desc": "螺旋丸",
+      "RotationCfg": {
+        "GetValueType": 0,
+        "Range": []
+      }
+    },
+    {
+      "Color": "Red",
+      "Group": 8,
+      "Source": "gqji_g8_07.png",
+      "Desc": "螺旋丸",
+      "RotationCfg": {
+        "GetValueType": 0,
+        "Range": []
+      }
+    },
+    {
+      "Color": "Red",
+      "Group": 8,
+      "Source": "gqji_g8_08.png",
+      "Desc": "螺旋丸",
+      "RotationCfg": {
+        "GetValueType": 0,
+        "Range": []
+      }
+    }
+  ]
+}

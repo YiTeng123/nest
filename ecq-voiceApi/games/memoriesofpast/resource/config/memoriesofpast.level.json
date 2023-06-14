@@ -1,0 +1,26 @@
+[
+  {
+    "levelno": 1,
+    "levelname": "Lv1",
+    "specialobstacles": "1-0-1|0|0|0|0",
+    "totalscore": 100,
+    "carouselcount": 1,
+    "answersecond": 5
+  },
+  {
+    "levelno": 2,
+    "levelname": "Lv2",
+    "specialobstacles": "1-0-0|0|0|0|0",
+    "totalscore": 100,
+    "carouselcount": 1,
+    "answersecond": 6
+  },
+  {
+    "levelno": 3,
+    "levelname": "Lv3",
+    "specialobstacles": "1-1-0|0|0|0|0",
+    "totalscore": 100,
+    "carouselcount": 1,
+    "answersecond": 6
+  }
+]

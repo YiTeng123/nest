@@ -1,0 +1,16 @@
+{
+  "11_memoriesofpast_转瞬即逝": [
+    {
+      "Source": "gqdjy_guide_1.png",
+      "Desc": "1. 游戏开始后，在屏幕中心出现一张卡牌，请在3秒时间内记住卡牌中的图形。"
+    },
+    {
+      "Source": "gqdjy_guide_2.png",
+      "Desc": "2. 卡牌图形记忆完成后，会翻到下一张卡牌。"
+    },
+    {
+      "Source": "gqdjy_guide_3.png",
+      "Desc": "3. 判断显示卡牌形状与上一张卡牌形状是否一样，点击下方是或否进行作答。"
+    }
+  ]
+}

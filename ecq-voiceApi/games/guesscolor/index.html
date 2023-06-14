@@ -1,0 +1,598 @@
+<!-- Sart游戏代码 -->
+<!doctype html>
+
+<html>
+
+	<head>
+		<title>猜颜色</title>
+		<meta charset="UTF-8">
+		<link rel="stylesheet" href="public/css/style.css">
+		<script src="https://pixijs.download/release/pixi.js"></script>
+	</head>
+
+	<body>
+		<canvas id="pixiCanvas"></canvas>
+		<script>
+			// this.gameFrameUrl = "";
+			// this.gameFrameUrl = "https://ecq.biai123.net";
+		this.gameFrameUrl = "https://localhost:8080";
+
+
+
+			const app = new PIXI.Application({
+				width: 1280,
+				height: 720,
+				view: document.getElementById('pixiCanvas'),
+				backgroundColor: 0x000000
+			});
+			document.body.appendChild(app.view);
+
+			// 配置游戏难度
+			var digitShowTime = 0.5;
+			var crossShowTime = 1.5;
+
+			// 原实验数字显示0.25秒，x显示0.9秒 难度较大故做了一些降低
+
+			const finish = 10; // 总共进行二十次
+
+			var gameStatus = 4;
+			// 0 - 准备阶段
+			// 1 - 游戏正式开始
+			// 2 - 游戏结束进入结算页面
+			// 4 - 难度选择页面
+
+			var display = 0;
+			// 1 - 显示的是数字
+			// 2 - 显示的是 ×
+			// 3 - 显示的是错误提示
+
+			// 数据初始化
+			var digit = null; // 当前显示的数字
+
+			// 测试显示共20次数字
+			var progess = 0;
+
+			var reaction = 0; //反应时间
+			var pressed = false; //用于判断玩家是否按下
+
+			var correct = 0; // 正确个数
+			var answered = 0;
+
+			var mouseCircle = 20;
+
+			var difficulty = 0;
+
+			var colourTexts = ["红色", "蓝色", "黄色", "绿色"]
+			var nowText = 0
+			var colourCodes = ["#ff0000", "#00ffff", "#ffff00", "#00ff00"]
+			var nowColour = 0
+
+			// 游戏资源 ------------------------------------------------------------------------------------------------------------------
+
+			// 简单按钮
+			let buttonContainer = new PIXI.Container();
+
+			var textureButton = PIXI.Texture.from('public/img/arrow_press.png');
+			var textureButtonDown = PIXI.Texture.from('public/img/arrow_error.png');
+			var textureButtonOver = PIXI.Texture.from('public/img/arrow_wait.png');
+
+
+			var button = new PIXI.Sprite(textureButton);
+			button.buttonMode = true;
+
+			button.anchor.set(0.5);
+			button.x = 620;
+			button.y = 480;
+
+			button.rotation = Math.PI;
+			// make the button interactive...
+			button.interactive = true;
+			button.buttonMode = true;
+
+			button
+				// Mouse & touch events are normalized into
+				// the pointer* events for handling different
+				// button events.
+				.on('pointerdown', onButtonDown)
+				.on('pointerup', onButtonUp)
+				.on('pointerupoutside', onButtonUp)
+				.on('pointerover', onButtonOver)
+				.on('pointerout', onButtonOut);
+
+			// add it to the stage
+			buttonContainer.addChild(button);
+
+			function onButtonDown() {
+				this.isdown = true;
+				this.texture = textureButtonDown;
+				this.alpha = 1;
+			}
+
+			function onButtonUp() {
+				this.isdown = false;
+				pickDifficiulty(1);
+				console.log("按下1");
+				if (this.isOver) {
+					this.texture = textureButtonOver;
+				} else {
+					this.texture = textureButton;
+				}
+			}
+
+			function onButtonOver() {
+				this.isOver = true;
+				if (this.isdown) {
+					return;
+				}
+				this.texture = textureButtonOver;
+			}
+
+			function onButtonOut() {
+				this.isOver = false;
+				if (this.isdown) {
+					return;
+				}
+				this.texture = textureButton;
+			}
+
+
+			app.stage.addChild(buttonContainer);
+
+
+			// 难度选择资源
+			let difficultyContainer = new PIXI.Container();
+
+
+
+
+			let difficultyText2 = new PIXI.Text('开始游戏', {
+				fontFamily: 'Arial',
+				fontSize: 30,
+				fill: 0xffffff,
+				align: 'center'
+			});
+			difficultyText2.x = 550;
+			difficultyText2.y = 390;
+			difficultyContainer.addChild(difficultyText2);
+
+
+			app.stage.addChild(difficultyContainer);
+
+			// 准备资源
+			let countDowndescText = new PIXI.Text('请准备', {
+				fontFamily: 'Arial',
+				fontSize: 30,
+				fill: 0xffffff,
+				align: 'center'
+			});
+			countDowndescText.x = 580;
+			countDowndescText.y = 200;
+			app.stage.addChild(countDowndescText);
+			countDowndescText.visible = false;
+
+			let countDownDigitText = new PIXI.Text('3', {
+				fontFamily: 'Arial',
+				fontSize: 120,
+				fill: 0xffffff,
+				align: 'center'
+			});
+			countDownDigitText.x = 590;
+			countDownDigitText.y = 300;
+			app.stage.addChild(countDownDigitText);
+			countDownDigitText.visible = false;
+
+			// 游戏中资源
+			let cross = new PIXI.Text('+', {
+				fontFamily: 'Arial',
+				fontSize: 120,
+				fill: 0xffffff,
+				align: 'center'
+			});
+			cross.x = 580;
+			cross.y = 290;
+			cross.visible = false;
+			app.stage.addChild(cross);
+
+			let digitText = new PIXI.Text(colourTexts[getRandom(0, difficulty)], {
+				fontFamily: 'Arial',
+				fontSize: 120,
+				fill: colourCodes[getRandom(0, difficulty)],
+				align: 'center'
+			});
+			digitText.x = 500;
+			digitText.y = 290;
+			digitText.visible = false;
+			app.stage.addChild(digitText);
+
+			let correctText = new PIXI.Text('正确！', {
+				fontFamily: 'Arial',
+				fontSize: 30,
+				fill: 0xffffff,
+				align: 'center'
+			});
+			correctText.x = 580;
+			correctText.y = 450;
+			correctText.visible = false;
+			app.stage.addChild(correctText);
+
+			// 错误提示资源
+			let mistakeContainer = new PIXI.Container();
+
+			let mistake = new PIXI.Text('错误 ☹', {
+				fontFamily: 'Arial',
+				fontSize: 60,
+				fill: 0x636363,
+				align: 'center'
+			});
+			mistake.x = 560;
+			mistake.y = 320;
+			mistakeContainer.addChild(mistake);
+
+			let infoPlate = new PIXI.Graphics();
+			infoPlate.lineStyle(2, 0xfff261, 1);
+			infoPlate.beginFill(0xcccccc, 1);
+			infoPlate.drawRoundedRect(500, 280, 300, 160);
+			infoPlate.endFill();
+			mistakeContainer.addChild(infoPlate);
+			mistakeContainer.setChildIndex(infoPlate, 0);
+			mistakeContainer.visible = false;
+
+			app.stage.addChild(mistakeContainer);
+
+			// 游戏结算资源
+			let resultContainer = new PIXI.Container();
+
+			let praise = new PIXI.Text('✦游戏完成，你真棒✦', {
+				fontFamily: 'Arial',
+				fontSize: 40,
+				fill: 0x33ff33,
+				align: 'center'
+			});
+			praise.x = 400;
+			praise.y = 120;
+			resultContainer.addChild(praise);
+
+
+
+			let label_1 = new PIXI.Text("正确个数", {
+				fontFamily: 'Arial',
+				fontSize: 40,
+				fill: 0xffffff,
+				align: 'center'
+			});
+			label_1.x = 300;
+			label_1.y = 300;
+			resultContainer.addChild(label_1);
+
+			let label_2 = new PIXI.Text("平均反应时间", {
+				fontFamily: 'Arial',
+				fontSize: 40,
+				fill: 0xffffff,
+				align: 'center'
+			});
+			label_2.x = 300;
+			label_2.y = 410;
+			resultContainer.addChild(label_2);
+
+			let label_3 = new PIXI.Text("(按任意键再玩一次)", {
+				fontFamily: 'Arial',
+				fontSize: 30,
+				fill: 0xffffff,
+				align: 'center'
+			});
+			label_3.x = 450;
+			label_3.y = 550;
+			resultContainer.addChild(label_3);
+
+			let label_1_correctCount = new PIXI.Text(10, {
+				fontFamily: 'Arial',
+				fontSize: 40,
+				fill: 0xffffff,
+				align: 'center'
+			});
+			label_1_correctCount.x = 760;
+			label_1_correctCount.y = 300;
+			resultContainer.addChild(label_1_correctCount);
+
+			let label_2_reactTime = new PIXI.Text(0.12, {
+				fontFamily: 'Arial',
+				fontSize: 40,
+				fill: 0xffffff,
+				align: 'center'
+			});
+			label_2_reactTime.x = 760;
+			label_2_reactTime.y = 410;
+			resultContainer.addChild(label_2_reactTime);
+
+			app.stage.addChild(resultContainer);
+			resultContainer.visible = false;
+
+			window.addEventListener("keydown", KeyDown);
+
+			function pickDifficiulty(level) {
+				if (level == 1) {
+					difficulty = 2;
+					digitShowTime = 1;
+					crossShowTime = 1.5;
+				} else if (level == 2) {
+					difficulty = 3;
+					digitShowTime = 0.9;
+					crossShowTime = 1.3;
+				} else if (level == 3) {
+					difficulty = 4;
+					digitShowTime = 0.8;
+					crossShowTime = 1.2;
+				} else {
+					return;
+				}
+
+				countdownT.start();
+				buttonContainer.visible = false;
+				difficultyContainer.visible = false;
+				countDownDigitText.visible = true;
+				countDowndescText.visible = true;
+				gameStatus = 0;
+			}
+
+			// 键盘监听事件 --------------------------------------------------------------------------------------
+			function KeyDown(e) {
+				if (gameStatus == 1) {
+					if (e.keyCode === 37 || e.keyCode === 39) {
+
+
+						pressed = true;
+
+						if (display == 1) {
+							mistakeContainer.visible = true;
+							display = 3;
+							if ((nowColour != nowText && e.keyCode === 39) || (nowColour == nowText && e.keyCode === 37)) {
+								correct += 1;
+								answered += 1;
+								reaction += seconds;
+								console.log("正确");
+
+								mistakeContainer.children[1].text = " 正确"
+
+							} else {
+								answered += 1;
+								reaction += seconds;
+								mistakeContainer.children[1].text = " 错误"
+							}
+						}
+
+						if (display == 2) {
+							console.log("现在还不用按");
+
+						}
+					}
+				} else if (gameStatus == 2) {
+					//重新开始游戏 初始化数值
+					gameStatus = 4;
+					progess = 0;
+					reaction = 0;
+					correct = 0;
+					answered = 0;
+					pressed = false;
+					seconds = 0;
+					countDownDigitText.text = "3";
+					resultContainer.visible = false;
+					difficultyContainer.visible = true;
+					buttonContainer.visible = true;
+				}
+			}
+
+			// 游戏主逻辑 -------------------------------------------------------------------------------------------------------
+			let cd = 3;
+			let seconds = 0;
+			const countdownT = new PIXI.Ticker
+			const shortbreakT = new PIXI.Ticker
+			const gameStartT = new PIXI.Ticker
+			const resultT = new PIXI.Ticker
+			countdownT.add((delta) => {
+				CountDown(delta);
+			});
+
+
+			//倒计时准备
+			function CountDown(delta) {
+				//console.log("xx");
+				seconds += (1 / 60) * delta;
+				if (seconds >= 1) {
+					cd -= 1;
+					countDownDigitText.text = cd.toString();
+					seconds = 0;
+				}
+				if (cd == 0) {
+					countDownDigitText.visible = false;
+					countDowndescText.visible = false;
+					countdownT.stop();
+					cd = 3;
+					seconds = 0;
+					shortbreakT.start();
+				}
+			}
+
+			shortbreakT.add((delta) => {
+				CountDown2(delta);
+			});
+
+			//游戏开始前间隔
+			function CountDown2(delta) {
+				seconds += (1 / 60) * delta;
+				if (seconds >= 1) {
+					cd -= 1;
+					seconds = 0;
+				}
+				if (cd == 0) {
+					cd = 3;
+					seconds = 0;
+					gameStatus = 1;
+					window.parent.postMessage({
+						status: "GameBegin",
+						message: "Success",
+						data: {
+							score: 0
+						}
+					}, this.gameFrameUrl), console.log("通知外部 " + this.gameFrameUrl + "，游戏开始");
+					shortbreakT.stop();
+
+					display = 1;
+					digitText.visible = true;
+					gameStartT.start();
+				}
+			}
+
+			gameStartT.add((delta) => {
+				Game(delta);
+			})
+
+
+			//游戏主逻辑
+			function Game(delta) {
+
+				seconds += (1 / 60) * delta;
+				if (display == 2 && seconds >= crossShowTime) {
+
+					//现在显示数字
+					pressed = false;
+					progess++;
+					if (progess >= finish) {
+						// 游戏结束
+						cross.visible = false;
+						gameStartT.stop();
+						resultT.start();
+						return;
+					}
+
+					seconds = 0;
+					display = 1;
+
+					nowColour = getRandom(0, difficulty);
+					digitText.text = colourTexts[nowColour];
+					nowText = getRandom(0, difficulty);
+					digitText.style.fill = colourCodes[nowText];
+
+					digitText.visible = true;
+					cross.visible = false;
+
+				} else if (display == 1 && seconds >= digitShowTime) {
+					correctText.visible = false;
+					//现在显示×
+					if (pressed == false) {
+						display = 3;
+						mistakeContainer.children[1].text = " 太慢"
+						mistakeContainer.visible = true;
+						return;
+					}
+					seconds = 0;
+					display = 2;
+					digitText.visible = false;
+					cross.visible = true;
+
+				} else if (display == 3 && seconds >= 3) {
+					//错误信息显示结束，切换回x
+					seconds = 0;
+					display = 2;
+					mistakeContainer.visible = false;
+					digitText.visible = false;
+					cross.visible = true;
+
+				}
+			}
+
+			resultT.add((delta) => {
+				Result(delta);
+			})
+
+			function Result(delta) {
+				resultT.stop();
+				gameStatus = 2;
+				resultContainer.visible = true;
+				resultContainer.children[4].text = correct + " / " + finish;
+				resultContainer.children[5].text = (reaction / answered).toFixed(3) + " 秒";
+
+				var rea = reaction / answered;
+				var rat = null;
+				var inter = [
+					[0, 0.33],
+					[0.33, 0.398],
+					[0.398, 0.534],
+					[0.534, 0.602],
+					[0.602, 1]
+				];
+				for (let i in inter) {
+					console.log(i);
+					if (rea < inter[i][1]) {
+						rat = ((((inter[i][1] - rea) / (inter[i][1] - inter[i][0])) * correct) / finish) * 100;
+						break;
+					}
+
+				}
+				if (rat > 80) {
+					rat = "很好"
+				} else if (rat > 60) {
+					rat = "较好"
+				} else if (rat > 40) {
+					rat = "一般"
+				} else if (rat > 20) {
+					rat = "不太理想"
+				} else {
+					rat = "不理想"
+				}
+
+
+				localStorage.setItem("ColorRat", rat);
+				window.parent.postMessage({
+					status: "GameOver",
+					message: "Success",
+					data: {
+						score: correct,
+						rat: rat,
+						detail:{
+							accuracy: correct + " / " + finish,
+							reaction: (reaction/answered).toFixed(3) + " 秒"
+						}
+					}
+				}, this.gameFrameUrl), console.log("通知外部 " + this.gameFrameUrl + "，游戏结束");
+
+			}
+
+
+			// let playerContainer = new PIXI.Container();
+
+			// app.stage.hitArea = app.screen;
+			// app.stage.interactive = true;
+			// app.stage.on('mousemove', function(event) { 
+			//     const x = event.data.global.x;
+			//     const y = event.data.global.y;
+			//     playerContainer.position.set(event.data.global.x,event.data.global.y);
+			//     //playerContainer.rotation = Math.atan2(y - player.y, x - player.x);
+			// });
+
+			// 主角被击范围
+			// const playerHit = new PIXI.Graphics();
+			// playerHit.lineStyle(2, 0xCC0000, 1);
+			// playerHit.beginFill(0xC34288, 0.25);
+			// playerHit.drawCircle(0, 0, mouseCircle);
+			// playerHit.endFill();
+			// playerContainer.addChild(playerHit);
+			// app.stage.addChild(playerContainer);
+
+
+			function onClick() {}
+
+			function destroyLater(delta, seconds, txt, ticker) {
+				seconds += (1 / 60) * delta;
+				if (seconds >= 5) {
+					app.stage.removeChild(txt);
+					ticker.destroy();
+					console.log("destory called");
+				}
+			}
+
+			function getRandom(min, max) {
+				return parseInt(Math.random() * (max - min) + min);
+			}
+		</script>
+	</body>
+</html>

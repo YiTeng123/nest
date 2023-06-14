@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Go or NOGO 任务</title>
+		<meta charset="UTF-8">
+		<link rel="stylesheet" href="public/css/style.css">
+		<script src="https://pixijs.download/release/pixi.js"></script>
+	</head>
+	<body>
+		<canvas id="pixiCanvas"></canvas>
+		<script>
+			// this.gameFrameUrl = "https://ecqapi.biai123.net/";
+			// this.gameFrameUrl = "https://ecq.biai123.net";
+		this.gameFrameUrl = "https://localhost:8080";
+
+			const app = new PIXI.Application({
+				width: 1280,
+				height: 720,
+				view: document.getElementById('pixiCanvas'),
+				backgroundColor: 0x000000
+			});
+			document.body.appendChild(app.view);
+
+			// 游戏常量
+			var digitShowTime = 0.6; //刺激显示时间/秒
+			var crossShowTime = 1.0; //"+"显示时间/秒
+			var blankShowTime = 0.1; //空屏显示时间/秒
+
+			var gameStatus = 3;
+			// 0 - 准备阶段
+			// 1 - 游戏正式开始
+			// 2 - 游戏结束进入结算页面
+			// 3 - 开始游戏页面
+
+			var gameModel = 0;
+			// 0 - 练习模式
+			// 1 - 正式模式
+
+			var gameType = 0;
+			// 0 - 出现字母X按“J”键（GO试次），出现字母Y不反应（NOGO 试次）
+			// 1 - 出现字母Y按“J”键（GO试次），出现字母X不反应（NOGO 试次）
+
+			var display = 0;
+			// 0 - 显示的是 +
+			// 1 - 显示的是 空屏
+			// 2 - 显示的是 刺激
+			// 3 - 显示的是 提示
+			// 4 - 显示的是 题目类型
+
+			var progess = 0;
+
+			var pressed = false; //用于判断玩家是否按下
+
+			var correct = 0; // 正确个数
+			var answered = 0;
+
+			var testTexts = ["  X", "  Y"]
+			var nowText = getRandom(0, 2)
+			var nowTextIndex = 0;
+			var practiceLen = 6; //练习试次数
+			var totalPractice = 2;//总练习试次
+			var practiceIndex = 0;
+			var taskLen = 6; //每个block试次数
+			var totalTask = 4; //总正式block数
+			var taskIndex = 0;
+			var index_x = 0; //x试次出现的次数
+			var index_y = 0; //y试次出现的次数
+
+			// 游戏资源 ------------------------------------------------------------------------------------------------------------------
+			let beginTextContainer = new PIXI.Container();
+
+			let beginText = new PIXI.Text('开始游戏', {
+				fontFamily: 'Arial',
+				fontSize: 30,
+				fill: 0xffffff,
+				align: 'center'
+			});
+			beginText.x = 580;
+			beginText.y = 350;
+			beginTextContainer.addChild(beginText);
+			app.stage.addChild(beginTextContainer);
+
+			let buttonContainer = new PIXI.Container();
+
+			var textureButton = PIXI.Texture.from('public/img/arrow_press.png');
+			var textureButtonDown = PIXI.Texture.from('public/img/arrow_error.png');
+			var textureButtonOver = PIXI.Texture.from('public/img/arrow_wait.png');
+
+			var button = new PIXI.Sprite(textureButton);
+			button.buttonMode = true;
+
+			button.anchor.set(0.5);
+			button.x = 650;
+			button.y = 430;
+
+			button.rotation = Math.PI;
+
+			// make the button interactive...
+			button.interactive = true;
+			button.buttonMode = true;
+
+			button
+				// Mouse & touch events are normalized into
+				// the pointer* events for handling different
+				// button events.
+				.on('pointerdown', onButtonDown)
+				.on('pointerup', onButtonUp)
+				.on('pointerupoutside', onButtonUp)
+				.on('pointerover', onButtonOver)
+				.on('pointerout', onButtonOut);
+
+			// add it to the stage
+			buttonContainer.addChild(button);
+
+			function onButtonDown() {
+				this.isdown = true;
+				this.texture = textureButtonDown;
+				this.alpha = 1;
+			}
+
+			function onButtonUp() {
+				this.isdown = false;
+				countdownT.start();
+				buttonContainer.visible = false;
+				beginTextContainer.visible = false;
+				countDownDigitText.visible = true;
+				countDowndescText.visible = true;
+				gameStatus = 0;
+				if (this.isOver) {
+					this.texture = textureButtonOver;
+				} else {
+					this.texture = textureButton;
+				}
+			}
+
+			function onButtonOver() {
+				this.isOver = true;
+				if (this.isdown) {
+					return;
+				}
+				this.texture = textureButtonOver;
+			}
+
+			function onButtonOut() {
+				this.isOver = false;
+				if (this.isdown) {
+					return;
+				}
+				this.texture = textureButton;
+			}
+			app.stage.addChild(buttonContainer);
+
+			// 准备资源
+			let countDowndescText = new PIXI.Text('请准备', {
+				fontFamily: 'Arial',
+				fontSize: 30,
+				fill: 0xffffff,
+				align: 'center'
+			});
+			countDowndescText.x = 595;
+			countDowndescText.y = 200;
+			app.stage.addChild(countDowndescText);
+			countDowndescText.visible = false;
+
+			let countDownDigitText = new PIXI.Text('3', {
+				fontFamily: 'Arial',
+				fontSize: 120,
+				fill: 0xffffff,
+				align: 'center'
+			});
+			countDownDigitText.x = 610;
+			countDownDigitText.y = 300;
+			app.stage.addChild(countDownDigitText);
+			countDownDigitText.visible = false;
+
+			// 游戏中资源
+			let cross = new PIXI.Text('+', {
+				fontFamily: 'Arial',
+				fontSize: 120,
+				fill: 0xffffff,
+				align: 'center'
+			});
+			cross.x = 610;
+			cross.y = 290;
+			cross.visible = false;
+			app.stage.addChild(cross);
+
+			let digitText = new PIXI.Text(testTexts[nowText], {
+				fontFamily: 'Arial',
+				fontSize: 120,
+				fill: 0xffffff,
+				align: 'center'
+			});
+			digitText.x = 520;
+			digitText.y = 290;
+			digitText.visible = false;
+			app.stage.addChild(digitText);
+
+			// 按键反馈提示资源
+			let toastContainer = new PIXI.Container();
+
+			let toast = new PIXI.Text('错误', {
+				fontFamily: 'Arial',
+				fontSize: 60,
+				fill: 0x636363,
+				align: 'center'
+			});
+			toast.x = 580;
+			toast.y = 330;
+			toastContainer.addChild(toast);
+
+			let infoPlate = new PIXI.Graphics();
+			infoPlate.lineStyle(2, 0xfff261, 1);
+			infoPlate.beginFill(0xcccccc, 1);
+			infoPlate.drawRoundedRect(500, 280, 300, 160);
+			infoPlate.endFill();
+			toastContainer.addChild(infoPlate);
+			toastContainer.setChildIndex(infoPlate, 0);
+			toastContainer.visible = false;
+
+			app.stage.addChild(toastContainer);
+
+			// 题目类型反馈提示资源
+			let typeTipContainer = new PIXI.Container();
+
+			let typeTipText = new PIXI.Text('练习：出现字母X按“J”键（共' + practiceLen + '题）', {
+				fontFamily: 'Arial',
+				fontSize: 36,
+				fill: 0xffffff,
+				align: 'center'
+			});
+			typeTipText.x = 400;
+			typeTipText.y = 300;
+			typeTipContainer.addChild(typeTipText);
+
+			let continueTip = new PIXI.Text("(按任意键继续)", {
+				fontFamily: 'Arial',
+				fontSize: 30,
+				fill: 0xffffff,
+				align: 'center'
+			});
+			continueTip.x = 450;
+			continueTip.y = 550;
+			typeTipContainer.addChild(continueTip);
+
+			app.stage.addChild(typeTipContainer);
+			typeTipContainer.visible = false;
+
+			// 游戏结算资源
+			let resultContainer = new PIXI.Container();
+
+			let praise = new PIXI.Text('✦游戏完成，你真棒✦', {
+				fontFamily: 'Arial',
+				fontSize: 40,
+				fill: 0x33ff33,
+				align: 'center'
+			});
+			praise.x = 400;
+			praise.y = 120;
+			resultContainer.addChild(praise);
+
+			let label_1 = new PIXI.Text("正确个数", {
+				fontFamily: 'Arial',
+				fontSize: 40,
+				fill: 0xffffff,
+				align: 'center'
+			});
+			label_1.x = 300;
+			label_1.y = 300;
+			resultContainer.addChild(label_1);
+
+			let label_3 = new PIXI.Text("(按任意键再玩一次)", {
+				fontFamily: 'Arial',
+				fontSize: 30,
+				fill: 0xffffff,
+				align: 'center'
+			});
+			label_3.x = 450;
+			label_3.y = 550;
+			resultContainer.addChild(label_3);
+
+			let label_1_correctCount = new PIXI.Text(0, {
+				fontFamily: 'Arial',
+				fontSize: 40,
+				fill: 0xffffff,
+				align: 'center'
+			});
+			label_1_correctCount.x = 760;
+			label_1_correctCount.y = 300;
+			resultContainer.addChild(label_1_correctCount);
+
+			app.stage.addChild(resultContainer);
+			resultContainer.visible = false;
+
+			window.addEventListener("keydown", KeyDown);
+			// 键盘监听事件 --------------------------------------------------------------------------------------
+			function KeyDown(e) {
+				if (display == 4) {
+					seconds = 0;
+					display = 0;
+					typeTipContainer.visible = false;
+					return;
+				}
+				if (gameStatus == 1) {
+					if (e.keyCode === 74) {
+						// keyCode J:74
+
+						pressed = true;
+
+						if (display == 2) {
+							if (gameType == 0) {
+								if (nowText == 0) {
+									correct += 1;
+									answered += 1;
+									console.log("正确");
+
+									toastContainer.children[1].text = "正确"
+								} else {
+									answered += 1;
+									toastContainer.children[1].text = "错误"
+								}
+							}
+							if (gameType == 1) {
+								if (nowText == 1) {
+									correct += 1;
+									answered += 1;
+									console.log("正确");
+
+									toastContainer.children[1].text = "正确"
+								} else {
+									answered += 1;
+									toastContainer.children[1].text = "错误"
+								}
+							}
+
+							toastContainer.visible = true;
+							seconds = 0;
+							display = 3;
+						}
+					}
+				} else if (gameStatus == 2) {
+					//重新开始游戏 初始化数值
+					gameStatus = 3;
+					progess = 0;
+					correct = 0;
+					answered = 0;
+					nowTextIndex = 0;
+					practiceIndex = 0;
+					taskIndex = 0;
+					index_x = 0;
+					index_y = 0;
+					pressed = false;
+					seconds = 0;
+					countDownDigitText.text = "3";
+					typeTipText.text = '练习'+practiceIndex+'：出现字母X按“J”键（共' + practiceLen + '题）';
+					resultContainer.visible = false;
+					beginTextContainer.visible = true;
+					buttonContainer.visible = true;
+				}
+			}
+
+			// 游戏主逻辑 -------------------------------------------------------------------------------------------------------
+			let cd = 3;
+			let seconds = 0;
+			const countdownT = new PIXI.Ticker
+			const shortbreakT = new PIXI.Ticker
+			const gameStartT = new PIXI.Ticker
+			const resultT = new PIXI.Ticker
+			countdownT.add((delta) => {
+				CountDown(delta);
+			});
+
+			//倒计时准备
+			function CountDown(delta) {
+				//console.log("xx");
+				seconds += (1 / 60) * delta;
+				if (seconds >= 1) {
+					cd -= 1;
+					countDownDigitText.text = cd.toString();
+					seconds = 0;
+				}
+				if (cd == 0) {
+					countDownDigitText.visible = false;
+					countDowndescText.visible = false;
+					countdownT.stop();
+					cd = 3;
+					seconds = 0;
+					shortbreakT.start();
+				}
+			}
+
+			shortbreakT.add((delta) => {
+				CountDown2(delta);
+			});
+
+			//游戏开始前间隔
+			function CountDown2(delta) {
+				seconds += (1 / 60) * delta;
+				if (seconds >= 1) {
+					cd -= 1;
+					seconds = 0;
+				}
+				if (cd == 0) {
+					cd = 3;
+					seconds = 0;
+					gameStatus = 1;
+					window.parent.postMessage({
+						status: "GameBegin",
+						message: "Success",
+						data: {
+							score: 0
+						}
+					}, this.gameFrameUrl), console.log("通知外部 " + this.gameFrameUrl + "，游戏开始");
+					shortbreakT.stop();
+
+					display = 4;
+					typeTipContainer.visible = true;
+					gameStartT.start();
+				}
+			}
+
+			gameStartT.add((delta) => {
+				Game(delta);
+			})
+
+			//游戏主逻辑
+			function Game(delta) {
+
+				seconds += (1 / 60) * delta;
+				if (display == 0 && seconds >= crossShowTime) {
+
+					// 现在显示空屏
+					// 增加完成的题目
+					pressed = false;
+					progess++;
+
+					seconds = 0;
+					display = 1;
+
+					cross.visible = false;
+
+				} else if (display == 1 && seconds >= blankShowTime) {
+					//现在显示刺激
+					nowTextIndex++;
+					let _len = gameModel == 0 ? practiceLen : taskLen;
+					if(index_x >= (_len/2)){
+						nowText = 1;
+					}else if(index_y >= (_len/2)){
+						nowText = 0;
+					}else{
+						nowText = getRandom(0,2)
+					}
+					if(nowText == 0){
+						index_x++;
+					}else{
+						index_y++;
+					}
+					digitText.text = testTexts[nowText];
+
+					seconds = 0;
+					display = 2;
+					digitText.visible = true;
+
+				} else if (display == 2 && seconds >= digitShowTime) {
+					//现在显示 + 
+					if (pressed == false) {
+						answered += 1;
+						if (gameType == 0) {
+							if (nowText == 0) {
+								toastContainer.children[1].text = "太慢"
+							} else {
+								correct += 1;
+
+								toastContainer.children[1].text = "正确"
+							}
+						}
+						if (gameType == 1) {
+							if (nowText == 1) {
+								toastContainer.children[1].text = "太慢"
+							} else {
+								correct += 1;
+
+								toastContainer.children[1].text = "正确"
+							}
+						}
+						display = 3;
+						toastContainer.visible = true;
+						return;
+					}
+					seconds = 0;
+					display = 0;
+					digitText.visible = false;
+					cross.visible = true;
+
+				} else if (display == 3 && seconds >= 2) {
+					//提示显示结束，切换回+
+					toastContainer.visible = false;
+					digitText.visible = false;
+					
+					//判断本组实验是否结束
+					if(gameModel == 0){
+						if(nowTextIndex >= practiceLen){
+							practiceIndex++;
+							if(practiceIndex >= totalPractice){
+								//练习结束
+								console.log(correct,answered);
+								if((correct / answered) < 0.80){
+									typeTipText.text = '准确率过低，请重试，出现字母X按“J”键：';
+									correct = 0;
+									answered = 0;
+									practiceIndex = 0;
+									gameType = 0;
+								}else{
+									gameModel++;
+									correct = 0;
+									answered = 0;
+									gameType = 0;
+									typeTipText.text = '正式实验'+(taskIndex+1)+':出现字母X按“J”键（共' + taskLen + '题）：';
+								}
+							}else{
+								if(practiceIndex % 2 == 0){
+									gameType = 0;
+									typeTipText.text = '练习'+(practiceIndex+1)+':出现字母X按“J”键（共' + practiceLen + '题）：';
+								}else{
+									gameType = 1;
+									typeTipText.text = '练习'+(practiceIndex+1)+':出现字母Y按“J”键（共' + practiceLen + '题）：';
+								}
+							}
+							nowTextIndex = 0;
+							index_x = 0;
+							index_y = 0;
+							seconds = 0;
+							display = 4;
+							typeTipContainer.visible = true;
+						}else{
+							//提示显示结束，切换回+
+							seconds = 0;
+							display = 0;
+							cross.visible = true;
+						}
+					}else{
+						if(nowTextIndex >= taskLen){
+							taskIndex++;
+							if(taskIndex >= totalTask){
+								// 游戏结束
+								gameStartT.stop();
+								resultT.start();
+								return;
+							}
+							if(taskIndex % 2 == 0){
+								gameType = 0;
+								typeTipText.text = '正式实验'+(taskIndex+1)+':出现字母X按“J”键（共' + taskLen + '题）：';
+							}else{
+								gameType = 1;
+								typeTipText.text = '正式实验'+(taskIndex+1)+':出现字母Y按“J”键（共' + taskLen + '题）：';
+							}
+							
+							nowTextIndex = 0;
+							index_x = 0;
+							index_y = 0;
+							seconds = 0;
+							display = 4;
+							typeTipContainer.visible = true;
+						}else{
+							//提示显示结束，切换回+
+							seconds = 0;
+							display = 0;
+							cross.visible = true;
+						}
+						
+					}
+
+				}
+			}
+
+			resultT.add((delta) => {
+				Result(delta);
+			})
+
+			function Result(delta) {
+				resultT.stop();
+				gameStatus = 2;
+				resultContainer.visible = true;
+				resultContainer.children[3].text = correct + " / " + answered;
+
+				let rat = 60;
+				
+				if (rat > 80) {
+					rat = "很好"
+				} else if (rat > 60) {
+					rat = "较好"
+				} else if (rat > 40) {
+					rat = "一般"
+				} else if (rat > 20) {
+					rat = "不太理想"
+				} else {
+					rat = "不理想"
+				}
+
+				localStorage.setItem("GoOrNogoRat", rat);
+				window.parent.postMessage({
+					status: "GameOver",
+					message: "Success",
+					data: {
+						score: correct,
+						rat: rat,
+						detail: {
+							accuracy: correct + " / " + answered
+						}
+					}
+				}, this.gameFrameUrl), console.log("通知外部 " + this.gameFrameUrl + "，游戏结束");
+
+			}
+
+			// 获取随机数 从min到(max-1)随机获取整数
+			function getRandom(min, max) {
+				return Math.floor(Math.random() * (max - min) + min);
+			}
+		</script>
+	</body>
+</html>
